@@ -1,0 +1,13 @@
+name = "DrillMudsThermalProps"
+uuid = "353a8573-383f-4727-b0e9-478950a5ec11"
+authors = ["Eduardo Alves"]
+version = "0.1.0"
+
+[compat]
+julia = "1.7"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
