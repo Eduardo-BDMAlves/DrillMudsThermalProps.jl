@@ -77,8 +77,19 @@ end
 
 function (F::Fluid)(P,T)
     ρ=rho(P,T,F)
+    κ=compress(P,T,F)
+    β=therm_expand(P,T,F)
+    C=Cp(P,T,F)
+    k=therm_cond(P,T,F)
+    μ=visc(P,T,F)
 
-    return (ρ=ρ,missing)
+    println("hello")
+    return (ρ=ρ,
+            κ=κ,
+            β=β,
+            Cₚ=C,
+            k=k,
+            μ=μ)
 end
 
 

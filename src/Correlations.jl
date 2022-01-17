@@ -1,9 +1,16 @@
-export rho,Cp,visc
+export rho,
+        Cp,
+        visc,
+        therm_cond,
+        therm_expand,
+        compress
+
 
 
 ## rho
 
 function rho(P,T,fluid::Fluid)
+    @error "Property not yet implemented for the fluid. - ρ"
     return missing
 end
 
@@ -26,6 +33,7 @@ end
 ## Cp
 
 function Cp(P,T,fluid::Fluid)
+    @error "Property not yet implemented for the fluid. - Cₚ"
     return missing
 end
 
@@ -52,6 +60,7 @@ end
 ## k
 
 function therm_cond(P,T,fluid::Fluid)
+    @error "Property not yet implemented for the fluid. - k"
     return missing
 end
 
@@ -78,6 +87,7 @@ end
 
 
 function visc(P,T,fluid::Fluid)
+    @error "Property not yet implemented for the fluid. - μ"
     return missing
 end
 
@@ -95,10 +105,18 @@ function visc(P,T,fluid::Water)
 end
 
 
+# therm expand
+
+function therm_expand(P,T,fluid::Fluid)
+    return -gradient(x->rho(P,x,fluid),T)[1]/rho(P,T,fluid)
+end
 
 
+## compressibility
 
-
+function compress(P,T,fluid::Fluid)
+    return gradient(x->rho(x,T,fluid),P)[1]/rho(P,T,fluid)
+end
 
 
 
