@@ -1,6 +1,7 @@
 module DrillMudsThermalProps
 
 
+using ForwardDiff
 
 
 # Write your package code here.
