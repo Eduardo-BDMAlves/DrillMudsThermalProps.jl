@@ -8,7 +8,7 @@ using Zygote
 
 include("Materials.jl")
 include("Correlations.jl")
-
+include("Mixture.jl")
 
 
 

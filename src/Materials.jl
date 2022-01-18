@@ -1,7 +1,8 @@
 
 export TestSolid,
     TestFluid,
-    Water
+    Water,
+    Barite
 
 
 abstract type Material end
@@ -103,20 +104,17 @@ end
 ## Solid
 
 struct Barite <: Solid
-
     name::Symbol
     ρ::Float64
     cₚ::Float64
-    μ::Float64
     k::Float64
 
-    function Water()
+    function Barite()
         new(
             :Barite,
-            2000.0,
-            5000.0,
-            1.002E-3,
-            0.568
+            4100.0,
+            10000.0,
+            0.949
         )
     end
 end

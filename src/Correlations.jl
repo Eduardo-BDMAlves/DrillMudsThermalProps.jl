@@ -3,8 +3,17 @@ export rho,
         visc,
         therm_cond,
         therm_expand,
-        compress
+        compress,
+        std_props
 
+
+
+## Std props
+
+function std_props(fluid::Fluid)
+    ρ=fluid.ρ
+
+end
 
 
 ## rho
@@ -117,6 +126,30 @@ end
 function compress(P,T,fluid::Fluid)
     return gradient(x->rho(x,T,fluid),P)[1]/rho(P,T,fluid)
 end
+
+
+
+
+
+
+# Solid
+
+## density
+
+function rho(P,T,fluid::Solid)
+    @error "Property not yet implemented for solid - ρ"
+    return missing
+end
+
+
+
+function rho(P,T,solid::Barite)
+    return solid.ρ
+end
+
+
+
+
 
 
 
