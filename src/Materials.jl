@@ -2,13 +2,18 @@
 export TestSolid,
     TestFluid,
     Water,
-    Barite
+    Barite,
+    Fluid,
+    Solid,
+    Fluid_sets
 
 
 abstract type Material end
 
 abstract type Solid <: Material end
 abstract type Fluid <: Material end
+
+# Fluid_sets=Union{(Fluid, (Fluid)...)...}
 
 # struct Water <: Fluid end
 
@@ -113,7 +118,7 @@ struct Barite <: Solid
         new(
             :Barite,
             4100.0,
-            10000.0,
+            4600.0,
             0.949
         )
     end

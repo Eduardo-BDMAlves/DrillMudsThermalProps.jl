@@ -9,19 +9,88 @@ struct DrillFluid <: Mud
     Liquids::Vector{Fluid}
     Solids::Vector{Solid}
 
-    nLiq::UInt
-    nSol::UInt
+    nLiq::Integer
+    nSol::Integer
 
-    fS::Vector{Float64}
     fL::Vector{Float64}
+    fS::Vector{Float64}
 
-    wt::Vector{Float64}
+    # wt::Vector{Float64}
+    wtL::Vector{Float64}
+    wtS::Vector{Float64}
 
 
-    function DrillFluid()
-        #TODO: completar esse trecho com a primeira parte dos modelos de mistura... implementar mais de uma versão, um com o uso de frações de massa, outro com volume. Por enquanto não usar 
+    function DrillFluid(Flist::Vector{<:Fluid},Slist::Vector{<:Solid};fs::AbstractVector,normalize=false)
+
+        nL = Integer(length(Flist))
+        nS = Integer(length(Slist))
+
+        missing_pos = findall(ismissing,fs)
+        
+
+        if !isempty(missing_pos)
+            if length(missing_pos)>1
+                @error "Too many volumetric proportions field left open. Package can complete the mixture with only one component at a time."
+            end
+            total_frac=sum(skipmissing(fs))
+            if total_frac>1.0 
+                @error "Normalization only available if no missing values are provided." 
+            end
+
+            fs[missing_pos]=1.0-total_frac
+            total_frac=1.0
+        else
+            total_frac=sum(fs)
+            if total_frac != 1.0
+                if normalize
+                    @warn "Total volumetric fractions greater than 100%, normalizing volume to crrect. If that is not desired pass `normalize` as false."
+
+                    fs=fs./total_frac
+                    total_frac=1.0
+
+                else
+                    @error "Total volume fraction provided greater than 100%, if the values provided are total volumes change the keyword argument `normalize` to true and the values will be normalized."
+                end
+            end
+        end
+
+        fL=fs[1:length(Flist)]
+        fS=fs[length(Flist):end]
+
+        Lrhos=[rho.ρ for rho ∈ Flist]
+        Srhos=[rho.ρ for rho ∈ Slist]
+
+        mLs=[rho*f for (rho,f) ∈ zip(Lrhos,fL)]
+        mSs=[rho*f for (rho,f) ∈ zip(Srhos,fS)]
+
+        mT=sum(mLs)+sum(mSs)
+
+        wtL=mLs./mT
+        wtS=mSs./mT
+
+        new(
+            Flist,
+            Slist,
+            nL,
+            nS,
+            fL,
+            fS,
+            wtL,
+            wtS
+        )
+
 
     end
+
+
+    # function DrillFluid(Flist,Slist;fs=missing,wts::Vector{Float64})
+    #     #TODO: completar esse trecho com a primeira parte dos modelos de mistura... implementar mais de uma versão, um com o uso de frações de massa, outro com volume. Por enquanto não usar 
+        
+
+
+
+    # end
+
 
 
 end
