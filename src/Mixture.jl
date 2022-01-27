@@ -13,7 +13,9 @@ struct DrillFluid <: Mud
     nSol::Integer
 
     fL::Vector{Float64}
+    sum_fL::Float64
     fS::Vector{Float64}
+    sum_fS::Float64
 
     # wt::Vector{Float64}
     wtL::Vector{Float64}
@@ -55,7 +57,9 @@ struct DrillFluid <: Mud
         end
 
         fL=fs[1:length(Flist)]
-        fS=fs[length(Flist):end]
+        sum_fL=sum(fL)
+        fS=fs[length(Flist)+1:end]
+        sum_fS=sum(fS)
 
         Lrhos=[rho.ρ for rho ∈ Flist]
         Srhos=[rho.ρ for rho ∈ Slist]
@@ -74,7 +78,9 @@ struct DrillFluid <: Mud
             nL,
             nS,
             fL,
+            sum_fL,
             fS,
+            sum_fS,
             wtL,
             wtS
         )
@@ -99,4 +105,31 @@ end
 
 
 
+
+
+## Functions
+
+
+# density of discret phases
+
+function rho(P,T,fluid::DrillFluid)
+    fluid_list=fluid.Liquids
+    solids_list=fluid.Solids
+
+    fL=fluid.fL
+    fS=fluid.fS
+
+    rho_l=[rho(P,T,f) for f ∈ fluid_list]
+    rho_s=[rho(P,T,s) for s ∈ solids_list]
+
+    rho_eq_l=sum(fL'*rho_l)
+    rho_eq_s=sum(fS'*rho_s)
+
+    f_TL=sum(fL)
+
+
+    rho_T=rho_eq_l+rho_eq_s
+
+    return rho_T
+end
 
