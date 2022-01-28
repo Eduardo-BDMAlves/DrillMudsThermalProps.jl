@@ -20,5 +20,5 @@ makedocs(;
 
 deploydocs(;
     repo="github.com/Eduardo-BDMAlves/DrillMudsThermalProps.jl",
-    devbranch="main",
+    devbranch="Development",
 )
