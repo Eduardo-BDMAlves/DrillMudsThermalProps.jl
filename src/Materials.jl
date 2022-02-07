@@ -17,20 +17,31 @@ abstract type Fluid <: Material end
 
 # struct Water <: Fluid end
 
-struct TestSolid{F} <: Solid
-    ρ::F
-    cₚ::F
-    μ::F
-    k::F
-end
-
-
-struct TestFluid <: Fluid
+struct TestSolid <: Solid
     name
     ρ
     cₚ
     μ
     k
+
+    function TestSolid()
+        new(
+            :TestSolid,
+            1000.0,
+            4000.0,
+            1.002E-3,
+            0.58
+        )
+    end
+end
+
+
+struct TestFluid <: Fluid
+    name::Symbol
+    ρ::Float64
+    cₚ::Float64
+    μ::Float64
+    k::Float64
 
     function TestFluid()
         new(
@@ -42,6 +53,7 @@ struct TestFluid <: Fluid
         )
     end
 end
+
 
 
 
