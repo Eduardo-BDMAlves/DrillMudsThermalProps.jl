@@ -6,7 +6,7 @@ export TestSolid,
     Fluid,
     Solid,
     Fluid_sets,
-    Brine_NaCl
+    BrineNaCl
 
 
 abstract type Material end
@@ -77,7 +77,7 @@ struct Water <: Fluid
 end
 
 
-struct Brine_NaCl <: Fluid
+struct BrineNaCl <: Fluid
 
     name::Symbol
     ρ::Float64
@@ -90,17 +90,25 @@ struct Brine_NaCl <: Fluid
 
     function BrineNaCl(ppg=9.8)
 
-        ppgs=[8.6:0.1:9.8]
-        xs=[
-            0.45501,0.061330,0.077159,0.092986,0.108814,0.124642,0.140470,0.156297,0.172125,0.187953,0.203782,0.219610,0.235437
-        ]
+        ppgs=8.6:0.1:9.8
+        xs=[0.45501,0.061330,0.077159,0.092986,0.108814,0.124642,0.140470,0.156297,0.172125,0.187953,0.203782,0.219610,0.235437]
 
         itp=LinearInterpolation(ppgs,xs)
 
         x=itp(ppg)
 
+        P=101325.0
+        T=273.15+20.0
 
-        rho_std=0.0
+        a,b,c,d,g,h,m,n,p,q,r,s = 8.23073018e+02, 1.38381011e+00, -2.85110020e-03,-9.11569454e-18, 4.04861229e-08, 2.38570427e-15, -2.65736884e-09, 9.52410475e-12, 1.27087646e+03, -7.83633987e-01, 6.26293103e-09, -2.11977575e-03
+    
+        d1=a+b*T+c*T^2
+        d2=g*P+h*P^2
+        d3=m*P*T+n*P*T^2+d*P^2*T
+        d4=p*x+q*x*T+r*x*P*T+s*x*T^2
+
+        rho_std= d1+d2+d3+d4
+
         cp_std=0.0
         mu_std=0.0
         k_std=0.0

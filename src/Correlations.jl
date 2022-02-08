@@ -32,16 +32,18 @@ function rho(P, T, fluid::Water)
 end
 
 
-function rho(P, T, x, fluid::Brine_NaCl)
+function rho(P, T, fluid::BrineNaCl)
 
-    a,b,c,d,g,h,m,n,p,q,r,s = 8.23073018e+02, 1.38381011e+00, -2.85110020e-03,-9.11569454e-18, 4.04861229e-08, 2.38570427e-15, -2.65736884e-09, 9.52410475e-12, 1.27087646e+03, -7.83633987e-01, 6.26293103e-09, -2.11977575e-03
- 
-    d1=a+b*T+c*T^2
-    d2=g*P+h*P^2
-    d3=m*P*T+n*P*T^2+d*P^2*T
-    d4=p*x+q*x*T+r*x*P*T+s*x*T^2
+    x = fluid.x
 
-    return d1+d2+d3+d4
+    a, b, c, d, g, h, m, n, p, q, r, s = 8.23073018e+02, 1.38381011e+00, -2.85110020e-03, -9.11569454e-18, 4.04861229e-08, 2.38570427e-15, -2.65736884e-09, 9.52410475e-12, 1.27087646e+03, -7.83633987e-01, 6.26293103e-09, -2.11977575e-03
+
+    d1 = a + b * T + c * T^2
+    d2 = g * P + h * P^2
+    d3 = m * P * T + n * P * T^2 + d * P^2 * T
+    d4 = p * x + q * x * T + r * x * P * T + s * x * T^2
+
+    return d1 + d2 + d3 + d4
 end
 
 ## Cp
@@ -64,6 +66,17 @@ function Cp(P, T, fluid::Water)
     return b + 2 * c * T + e * P + 2 * f * P * T + g * P * 2 + 2 * h * P^2 * T
 end
 
+function Cp(P, T, fluid::BrineNaCl)
+
+    x = fluid.x
+
+    b, c, d, e, f, g, i, j, k, l, m = (2.48218846e+03, 3.80939153e-06, -3.45541918e-15, -2.57191794e+03, 3.85762099e+03, 1.93733545e-07, 2.27236796e+00, -9.07624069e-09, 1.27273598e-17, 1.38313250e+00, -1.96832796e+00)
+
+    h_1 = b + c * P + d * P^2 + e * x + f * x^2 + g * x * P
+    h_2 = 2 * (i + j * P + k * P^2 + l * x + m * x^2) * T
+    return h_1 + h_2
+
+end
 
 ## k
 
@@ -83,6 +96,21 @@ function therm_cond(P, T, fluid::Water)
     g = -2.77585855E-24
 
     return a + b * T + c * T^2 + d * P + e * P * T + f * P * T^2 + g * P^2 * T^2
+end
+
+
+function therm_cond(P, T, fluid::BrineNaCl)
+
+    x = fluid.x
+
+    a, b, c, d, g, h, m, n, p, q, r, s, t = (-9.60221679e-01, 1.06170815e-02, -2.25969876e-05, 1.57190072e-08, -8.34381967e-10, -2.63526539e-19, 4.75581304e-12, -3.22756205e-15, 4.47716476e-01, -4.57135183e-03, 1.55078050e-09, -2.82355304e-12, 8.68547458e-06)
+
+    k_1 = a + b * T + c * T^2 + d * T^3
+    k_2 = g * P + h * P^2
+    k_3 = m * P * T + n * P * T^2
+    k_4 = p * x + q * x * T + r * x * P + s * x * P * T + t * x * T^2
+
+    return k_1 + k_2 + k_3 + k_4
 end
 
 
@@ -106,6 +134,23 @@ function visc(P, T, fluid::Water)
 
     return a * (exp((b - T) / (c + T) * ((P + d) / (P - e)))) + f * T + g
 end
+
+
+function visc(P, T, fluid::BrineNaCl)
+
+    x = fluid.x
+
+    a, b, c, d, g, h, m, p, q, r = (-9.29821669e+00, -5.62181704e+02, -2.60785572e-07, 2.24278114e+03, -1.75402843e-16, 3.70625444e+05, -4.33694111e+05, 4.47607787e-12, -1.44053809e-20, -1.33905655e-05)
+
+
+    v_1 = a + (b + c * P + d * x + g * P^2) / T
+    v_2 = (h + m * x) / T^2
+    v_3 = p * P * T + q * P^2 * T + r * T^2 * x^2
+    return exp(v_1 + v_2 + v_3)
+end
+
+
+
 
 
 # therm expand
