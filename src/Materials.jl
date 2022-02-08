@@ -5,7 +5,8 @@ export TestSolid,
     Barite,
     Fluid,
     Solid,
-    Fluid_sets
+    Fluid_sets,
+    Brine_NaCl
 
 
 abstract type Material end
@@ -76,11 +77,46 @@ struct Water <: Fluid
 end
 
 
+struct Brine_NaCl <: Fluid
+
+    name::Symbol
+    ρ::Float64
+    cₚ::Float64
+    μ::Float64
+    k::Float64
+    x::Float64
 
 
 
+    function BrineNaCl(ppg=9.8)
+
+        ppgs=[8.6:0.1:9.8]
+        xs=[
+            0.45501,0.061330,0.077159,0.092986,0.108814,0.124642,0.140470,0.156297,0.172125,0.187953,0.203782,0.219610,0.235437
+        ]
+
+        itp=LinearInterpolation(ppgs,xs)
+
+        x=itp(ppg)
 
 
+        rho_std=0.0
+        cp_std=0.0
+        mu_std=0.0
+        k_std=0.0
+
+        new(
+            :Brine_NaCl,
+            rho_std,
+            cp_std,
+            mu_std,
+            k_std,
+            x
+        )
+    end
+
+
+end
 
 
 

@@ -1,8 +1,8 @@
 module DrillMudsThermalProps
 
 
-using Zygote
-
+import Zygote
+import Interpolations
 
 # Write your package code here.
 
