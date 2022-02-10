@@ -168,21 +168,21 @@
     dev_rho = abs.(rhos_CP .- rhos) ./ rhos_CP
 
     @testset "Density" begin
-        for (dev,ip) ∈ zip(dev_rho,ips)
+        for (dev,ip) in zip(dev_rho,ips)
             @test (dev ≤ 0.01)
         end
     end
 
     dev_Cp=abs.(Cps_CP.-Cps)./Cps
     @testset "Cp" begin
-        for (dev,ip) ∈ zip(dev_Cp,ips)
+        for (dev,ip) in zip(dev_Cp,ips)
             @test (dev ≤ 0.05)
         end
     end
 
     dev_mu=abs.(mus.-mus_CP)./mus_CP
     @testset "Viscosity" begin
-        for (dev,ip) ∈ zip(dev_mu,ips)
+        for (dev,ip) in zip(dev_mu,ips)
             @test (dev ≤ 0.07)
         end
     end
@@ -191,7 +191,7 @@
 
     dev_ks=abs.(ks-ks_CP)./ks_CP
     @testset "therm. cond." begin
-        for (dev,ip) ∈ zip(dev_ks,ips)
+        for (dev,ip) in zip(dev_ks,ips)
             @test (dev ≤ 0.05)
         end
     end
