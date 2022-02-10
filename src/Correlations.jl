@@ -181,6 +181,13 @@ function rho(P, T, solid::Barite)
     return solid.ρ
 end
 
+function rho(P, T, solid::CaCO3)
+    return solid.ρ
+end
+
+function rho(P,T,solid::Hematite)
+    return solid.ρ
+end
 
 ## Cp
 
@@ -193,6 +200,20 @@ function Cp(P, T, solid::Barite)
     return 4600.0
 end
 
+function Cp(P, T, solid::CaCO3)
+    return solid.cₚ
+end
+
+function Cp(P,T,solid::Hematite)
+    A=93.43834
+    B=108.3577
+    C=-50.86447
+    D=25.58683
+    E=-1.611330
+    t=T/1000.0
+    CpM=A+B*t+C*t^2+D*t^3+E/(t^2)
+    return CpM/159.688*1000.0
+end
 
 ## therm cond
 
@@ -207,7 +228,13 @@ function therm_cond(P, T, solid::Barite)
 end
 
 
+function therm_cond(P, T, solid::CaCO3)
+    return solid.k
+end
 
 
+function therm_cond(P, T, solid::Hematite)
+    return (0.0839-6.63E-5*T)*100.0
+end
 
 
