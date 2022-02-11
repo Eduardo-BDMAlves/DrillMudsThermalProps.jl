@@ -1,6 +1,6 @@
 @testset "Solids tests" begin
     @testset "Barite" begin
-        barite=Barite()        
+        barite=Barite()
 
         @test barite.ρ≈rho(101325.0,298.15,barite)
         @test barite.cₚ≈Cp(101325.0,298.15,barite)
@@ -8,7 +8,7 @@
     end
 
     @testset "Hematite" begin
-        hematite=Hematite()        
+        hematite=Hematite()
 
         @test hematite.ρ≈rho(101325.0,298.15,hematite)
         @test hematite.cₚ≈Cp(101325.0,298.15,hematite)
