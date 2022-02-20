@@ -7,4 +7,8 @@ using Test
     include("Solids.jl")
     include("MixtureDensity.jl")
 
+
+
+    @test_throws rho(101325.0,298.15,TestFluid())
+
 end
