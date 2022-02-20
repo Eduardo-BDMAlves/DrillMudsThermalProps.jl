@@ -7,6 +7,7 @@ using JLD2
 
 # Write your package code here.
 
+include("Erros.jl")
 include("Materials.jl")
 include("Correlations.jl")
 

@@ -17,6 +17,7 @@ end
 
 function rho(P, T, fluid::Fluid)
     @error "Property not yet implemented for the fluid. - ρ"
+    throw(NotImplementedError())
     return missing
 end
 
@@ -50,6 +51,7 @@ end
 
 function Cp(P, T, fluid::Fluid)
     @error "Property not yet implemented for the fluid. - Cₚ"
+    throw(NotImplementedError())
     return missing
 end
 
@@ -82,6 +84,7 @@ end
 
 function therm_cond(P, T, fluid::Fluid)
     @error "Property not yet implemented for the fluid. - k"
+    throw(NotImplementedError())
     return missing
 end
 
@@ -119,6 +122,7 @@ end
 
 function visc(P, T, fluid::Fluid)
     @error "Property not yet implemented for the fluid. - μ"
+    throw(NotImplementedError())
     return missing
 end
 
@@ -174,6 +178,7 @@ end
 
 function rho(P, T, fluid::Solid)
     @error "Property not yet implemented for solid - ρ"
+    throw(NotImplementedError())
     return missing
 end
 
@@ -193,6 +198,7 @@ end
 
 function Cp(P, T, solid::Solid)
     @error "Property not yet implemented for solid - Cₚ"
+    throw(NotImplementedError())
     return missing
 end
 
@@ -219,6 +225,7 @@ end
 
 function therm_cond(P, T, solid::Solid)
     @error "Property not yet implemented for solid - k"
+    throw(NotImplementedError())
     return missing
 end
 

@@ -9,6 +9,10 @@ using Test
 
 
 
-    @test_throws rho(101325.0,298.15,TestFluid())
+    @test isa(try 
+                rho(101325.0,298.15,TestFluid()) 
+            catch e
+                e 
+            end,Exception)
 
 end
