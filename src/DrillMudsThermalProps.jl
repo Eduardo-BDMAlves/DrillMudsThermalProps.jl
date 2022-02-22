@@ -4,6 +4,7 @@ module DrillMudsThermalProps
 import Zygote: gradient
 import Interpolations: LinearInterpolation
 using JLD2
+using CodecBzip2
 
 # Write your package code here.
 
