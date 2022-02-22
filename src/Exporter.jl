@@ -41,7 +41,7 @@ function generate_JLD2(fname,props_dics,Ts,Ps,fluid;include_std=true)
 
 
 
-    jldopen(fname,"w",compress = false) do file
+    jldopen(fname,"w") do file
         file["fluid"]=fluid
 
         file["inputs/Ts"]=Ts
