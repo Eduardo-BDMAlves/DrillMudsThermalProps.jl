@@ -30,12 +30,6 @@ version = "1.0.1"
 [[deps.Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 
-[[deps.Bzip2_jll]]
-deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
-git-tree-sha1 = "19a35467a82e236ff51bc17a3a44b69ef35185a2"
-uuid = "6e34b625-4abd-537c-b88f-471c36dfa7a0"
-version = "1.0.8+0"
-
 [[deps.ChainRules]]
 deps = ["ChainRulesCore", "Compat", "IrrationalConstants", "LinearAlgebra", "Random", "RealDot", "SparseArrays", "Statistics"]
 git-tree-sha1 = "098b5eeb1170f569a45f363066b0e405868fc210"
@@ -53,12 +47,6 @@ deps = ["ChainRulesCore", "LinearAlgebra", "Test"]
 git-tree-sha1 = "bf98fa45a0a4cee295de98d4c1462be26345b9a1"
 uuid = "9e997f8a-9a97-42d5-a9f1-ce6bfc15e2c0"
 version = "0.1.2"
-
-[[deps.CodecBzip2]]
-deps = ["Bzip2_jll", "Libdl", "TranscodingStreams"]
-git-tree-sha1 = "2e62a725210ce3c3c2e1a3080190e7ca491f18d7"
-uuid = "523fee87-0ab8-5b00-afb7-3ecf72e48cfd"
-version = "0.7.2"
 
 [[deps.CommonSubexpressions]]
 deps = ["MacroTools", "Test"]
