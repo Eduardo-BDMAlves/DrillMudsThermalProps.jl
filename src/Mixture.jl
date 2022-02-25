@@ -39,7 +39,7 @@ struct DrillFluid <: Mud
                 @error "Normalization only available if no missing values are provided." 
             end
 
-            fs[missing_pos]=1.0-total_frac
+            fs[missing_pos[1]]=1.0-total_frac
             total_frac=1.0
         else
             total_frac=sum(fs)
