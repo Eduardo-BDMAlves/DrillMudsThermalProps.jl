@@ -8,7 +8,8 @@ export TestSolid,
     BrineNaCl,
     CaCO3,
     Hematite,
-    Hexadecene
+    Hexadecene,
+    Bentonite
 
 
 abstract type Material end
@@ -146,7 +147,7 @@ struct BrineNaCl <: Fluid
 
         new(
             :Brine_NaCl,
-            rho_std,
+            ppg*119.83,
             cp_std,
             mu_std,
             k_std,
@@ -280,4 +281,22 @@ struct Hematite <: Solid
             6.413265500000001
         )
     end
+end
+
+
+struct Bentonite <: Solid
+    name::Symbol
+    ρ::Float64
+    cₚ::Float64
+    k::Float64
+
+    function Bentonite()
+        new(
+            :Bentonite,
+            2600.311,
+            1150.0,#
+            1.3#https://www.andra.fr/mini-sites/lille2007/abstract_lille2007/donnees/pdf/579_580_P_THME_19.pdf
+        )
+    end
+
 end
