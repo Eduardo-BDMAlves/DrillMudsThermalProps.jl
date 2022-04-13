@@ -193,6 +193,9 @@ function solicitation_table_parser(df,target_rho,total_vol)
     
     mass_frac=mass_unit./total_mass
 
+
+
+    
     df.mass=mass_unit
     (
         total_mass=total_mass,
