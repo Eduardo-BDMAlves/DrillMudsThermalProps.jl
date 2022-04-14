@@ -72,7 +72,7 @@ end
 
 ## density
 
-function rho(P, T, fluid::Solid)
+function rho(P, T, solid::Solid)
     # @error "Property not yet implemented for solid - ρ"
     # throw(NotImplementedError())
     # return missing
