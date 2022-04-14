@@ -16,5 +16,6 @@ Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
 [compat]
 Compat = "3"
 CompatHelper = "3"
+DataFrames = "1"
 Interpolations = "0.13"
 Zygote = "0.6"
