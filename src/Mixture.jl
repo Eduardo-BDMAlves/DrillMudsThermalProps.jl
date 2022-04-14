@@ -6,8 +6,8 @@ abstract type Mud end
 
 
 struct DrillFluid <: Mud
-    Liquids::Vector{Fluid}
-    Solids::Vector{Solid}
+    Liquids::Vector{<:Fluid}
+    Solids::Vector{<:Solid}
 
     nLiq::Integer
     nSol::Integer
@@ -132,4 +132,19 @@ function rho(P,T,fluid::DrillFluid)
 
     return rho_T
 end
+
+
+
+function Cp(P,T,fluid::DrillFluid)
+    CpsL=Cp.(P,T,fluid.Liquids)
+    CpsS=Cp.(P,T,fluid.Solids)
+
+    return dot(CpsL,fluid.wtL)+dot(CpsS,fluid.wtS)
+end
+
+
+
+
+
+
 

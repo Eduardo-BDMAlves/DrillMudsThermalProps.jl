@@ -6,7 +6,7 @@ import Interpolations: LinearInterpolation
 using JLD2
 using Unitful
 using DataFrames
-
+using LinearAlgebra
 
 # Write your package code here.
 

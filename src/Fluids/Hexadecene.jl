@@ -33,9 +33,13 @@ end
 
 
 
+function rho(P,T,fluid::Hexadecene)
+    return fluid.ρ
+end
 
-
-
+function Cp(P,T,fluid::Hexadecene)
+    return fluid.cₚ
+end
 
 
 

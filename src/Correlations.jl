@@ -79,18 +79,6 @@ function rho(P, T, solid::Solid)
     return solid.ρ
 end
 
-# function rho(P, T, solid::Barite)
-#     return solid.ρ
-# end
-
-# function rho(P, T, solid::CaCO3)
-#     return solid.ρ
-# end
-
-# function rho(P,T,solid::Hematite)
-#     return solid.ρ
-# end
-
 ## Cp
 
 function Cp(P, T, solid::Solid)
