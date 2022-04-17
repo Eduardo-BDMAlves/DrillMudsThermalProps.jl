@@ -27,7 +27,11 @@ include.(Solids_files)
 include("Correlations.jl")
 
 include("Mixture.jl")
-include("ConductivityMixtures.jl")
+Trans_Mix_rules_paths=joinpath(@__DIR__,"TransportPropsMixtureRules")
+Trans_Mix_rules_files=joinpath.(Trans_Mix_rules_paths,readdir(Trans_Mix_rules_paths))
+include.(Trans_Mix_rules_files)
+# include("TransportPropsMixtureRules/Conductivity.jl")
+# include("ConductivityMixtures.jl")
 
 
 

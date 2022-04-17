@@ -37,12 +37,20 @@ function rho(P,T,fluid::Hexadecene)
     return fluid.ρ
 end
 
+function visc(P,T,fluid::Hexadecene)
+    @warn "Not implemented, using constant value for implementation of mixture... Implement the rule."
+    return fluid.μ
+end
+
 function Cp(P,T,fluid::Hexadecene)
     return fluid.cₚ
 end
 
 
-
+function therm_cond(P,T,fluid::Hexadecene)
+    @warn "Not implemented, using constant value for implementation of mixture... Implement the rule."
+    return fluid.k
+end
 
 
 

@@ -20,6 +20,10 @@ end
 
 
 
+function therm_cond(P, T, solid::Barite)
+    Tc = T - 273.15
+    return -9.0E-5 * Tc + 0.0974
+end
 
 
 

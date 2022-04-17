@@ -18,3 +18,14 @@ struct CaCO3 <: Solid
         )
     end
 end
+
+
+
+function therm_cond(P,T,solid::CaCO3)
+    return solid.k
+end
+
+
+
+
+

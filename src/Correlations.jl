@@ -115,19 +115,15 @@ function therm_cond(P, T, solid::Solid)
     return missing
 end
 
-function therm_cond(P, T, solid::Barite)
-    Tc = T - 273.15
-    return -9.0E-5 * Tc + 0.0974
-end
 
 
-function therm_cond(P, T, solid::CaCO3)
-    return solid.k
-end
+# function therm_cond(P, T, solid::CaCO3)
+#     return solid.k
+# end
 
 
-function therm_cond(P, T, solid::Hematite)
-    return (0.0839-6.63E-5*T)*100.0
-end
+# function therm_cond(P, T, solid::Hematite)
+#     return (0.0839-6.63E-5*T)*100.0
+# end
 
 

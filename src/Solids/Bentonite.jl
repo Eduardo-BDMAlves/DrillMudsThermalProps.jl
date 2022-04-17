@@ -15,3 +15,17 @@ struct Bentonite <: Solid
         )
     end
 end
+
+
+
+
+
+
+
+
+function therm_cond(P,T,solid::Bentonite)
+    return solid.k
+end
+
+
+
