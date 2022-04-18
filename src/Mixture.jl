@@ -1,5 +1,7 @@
 export Mud,
-        DrillFluid
+        DrillFluid,
+        CTEVolDist,
+        VarVolDist
 
 
 abstract type Mud end
@@ -21,6 +23,7 @@ struct DrillFluid <: Mud
     wtL::Vector{Float64}
     wtS::Vector{Float64}
 
+    std_rho::Float64
 
     function DrillFluid(Flist::Vector{<:Fluid},Slist::Vector{<:Solid};fs::AbstractVector,normalize=false)
 
@@ -72,6 +75,8 @@ struct DrillFluid <: Mud
         wtL=mLs./mT
         wtS=mSs./mT
 
+        std_rho=dot(fL,[rho.ρ for rho ∈ Flist])+dot(fS,[rho.ρ for rho ∈ Slist])
+
         new(
             Flist,
             Slist,
@@ -82,7 +87,8 @@ struct DrillFluid <: Mud
             fS,
             sum_fS,
             wtL,
-            wtS
+            wtS,
+            std_rho
         )
 
 
@@ -110,9 +116,20 @@ end
 ## Functions
 
 
+abstract type RhoModel end
+
+struct CTEVolDist end
+
+struct VarVolDist end
+
 # density of discret phases
 
 function rho(P,T,fluid::DrillFluid)
+    return rho(P,T,fluid,CTEVolDist())
+end
+
+
+function rho(P,T,fluid::DrillFluid,model::CTEVolDist)
     fluid_list=fluid.Liquids
     solids_list=fluid.Solids
 
@@ -132,6 +149,25 @@ function rho(P,T,fluid::DrillFluid)
 
     return rho_T
 end
+
+
+function rho(P,T,fluid::DrillFluid,model::VarVolDist)
+    fluid_list=fluid.Liquids
+
+    fL=fluid.fL
+
+    rho_l=rho.(P,T,fluid.Liquids)
+
+    rho_l_std=[f.ρ for f ∈ fluid_list]
+
+    d_rho_l=rho_l-rho_l_std
+
+    d_rho_l_dim=d_rho_l./rho_l
+
+    return fluid.std_rho/(1.0-dot(fL,d_rho_l_dim))
+end
+
+
 
 
 
