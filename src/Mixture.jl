@@ -1,7 +1,8 @@
 export Mud,
         DrillFluid,
         CTEVolDist,
-        VarVolDist
+        VarVolDist,
+        update_fs
 
 
 abstract type Mud end
@@ -116,6 +117,23 @@ end
 ## Functions
 
 
+
+
+function update_fs(P,T,fluid::DrillFluid)
+    rho_T = rho(P,T,fluid)
+    fl = fluid.wtL ./ rho.(P,T,fluid.Liquids).*rho_T
+
+    fs = fluid.wtS ./ rho.(P,T,fluid.Solids).*rho_T
+
+    return (fl,fs)
+end
+
+
+
+
+
+#for density
+
 abstract type RhoModel end
 
 struct CTEVolDist end
@@ -125,7 +143,7 @@ struct VarVolDist end
 # density of discret phases
 
 function rho(P,T,fluid::DrillFluid)
-    return rho(P,T,fluid,CTEVolDist())
+    return rho(P,T,fluid,VarVolDist())
 end
 
 
