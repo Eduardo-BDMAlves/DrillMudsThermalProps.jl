@@ -184,8 +184,6 @@ end
 
 
 
-
-
 ## General funcion
 
 function therm_cond(P,T,Mud::DrillFluid) 
