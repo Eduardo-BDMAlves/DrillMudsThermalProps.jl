@@ -48,8 +48,13 @@ end
 
 
 function therm_cond(P,T,fluid::Hexadecene)
-    @warn "Not implemented, using constant value for implementation of mixture... Implement the rule."
-    return fluid.k
+    # @warn "Not implemented, using constant value for implementation of mixture... Implement the rule."
+    # return fluid.k
+    A=-1.7204
+    B=1.0172
+    C=722.0
+    log_lamb=A+B*(1.0-T/C)^(2/7)
+    return 10^log_lamb
 end
 
 

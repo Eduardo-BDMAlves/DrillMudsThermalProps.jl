@@ -3,7 +3,8 @@ export Tsederberg,
     MaxwellMixture,
     Rayleigh,
     RayleighMixture,
-    Churchill
+    Churchill,
+    ChurchillSolidComp
 
 
 
@@ -66,6 +67,7 @@ end
 
 struct Churchill <: CondMixture end
 
+struct ChurchillSolidComp <: CondMixture end
 
 
 
@@ -179,7 +181,37 @@ function therm_cond(P,T,Mud::DrillFluid, model::Churchill)
     fs103=fS^(10/3)
 
     return k_c*(num_1/den_1-2.0fS+0.409*num_2*fs73/den_2-2.133*num_3*fs103/den_3)/(num_1/den_1+fS+0.409num_2*fs73/den_2-0.906num_3*fs103/den_3)
+end
+
+function therm_cond(P,T,Mud::DrillFluid,model::ChurchillSolidComp)
     
+    k_c=dot(therm_cond.(P,T,Mud.Liquids),Mud.wtL)
+
+    (fl,fs) = update_fs(P,T,Mud)
+
+    k_eff=k_c
+    for (i,s) in enumerate(Mud.Solids)
+        k_d=therm_cond(P,T,s)
+        fS=fs[i]
+        k_c=k_eff
+
+        lambda=k_d/k_c
+
+        num_1=2.0+lambda
+        num_2=6.0+3.0lambda
+        num_3=3.0-3.0lambda
+
+        den_1=1.0-lambda
+        den_2=4.0+3.0lambda
+        den_3=den_2
+
+        fs73=fS^(7/3)
+        fs103=fS^(10/3)
+
+        k_eff = k_c*(num_1/den_1-2.0fS+0.409*num_2*fs73/den_2-2.133*num_3*fs103/den_3)/(num_1/den_1+fS+0.409num_2*fs73/den_2-0.906num_3*fs103/den_3)
+    end
+    
+    return k_eff
 end
 
 
