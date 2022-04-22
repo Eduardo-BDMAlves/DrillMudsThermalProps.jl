@@ -7,6 +7,7 @@ using JLD2
 using Unitful
 using DataFrames
 using LinearAlgebra
+using Roots
 
 # Write your package code here.
 
