@@ -122,8 +122,5 @@ end
 # end
 
 
-# function therm_cond(P, T, solid::Hematite)
-#     return (0.0839-6.63E-5*T)*100.0
-# end
 
 
