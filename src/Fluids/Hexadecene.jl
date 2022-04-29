@@ -44,7 +44,8 @@ struct Hexadecene <: Fluid
             722.0124308882724,
             1370.0E3,
             # 1470.0E3,
-            0.693
+            # 0.693
+            0.721
             # 730.0
         )
 
@@ -141,7 +142,7 @@ function rho(P,T,fluid::Hexadecene,EOS::PRSV)
         elseif v1 ≥ 0 && v3 ≥ 0
             v=min(v1,v3)
         elseif v1 ≥ 0
-            v=v1 
+            v=v1
         elseif v2 ≥ 0
             v=v2
         elseif v3 ≥ 0
@@ -155,18 +156,19 @@ function rho(P,T,fluid::Hexadecene,EOS::PRSV)
     Bv=2.575
 
     # Dv=-0.04279848596094332#-0.6144070066691208*1000#brute force...
-    Dv=-0.07912628148911949
+    # Dv=-0.07912628148911949
+    Dv=-0.07844500194634374
 
     v_new=(v+Dv)*(1-exp(Av-Bv/Tr^3))
     # v_new=v
-    return fluid.MM/v
+    # return fluid.MM/v
     return fluid.MM/v_new
 end
 
 
 function rho(P,T,fluid::Hexadecene,EOS::RK)
 
-    R=8.31446261815324
+    R=8.31446261815324E3
 
     a=0.42748*R*R*fluid.Tc^(5/2)/fluid.Pc
 
@@ -195,7 +197,7 @@ function rho(P,T,fluid::Hexadecene,EOS::RK)
 
     println((a_eq=fluid.MM/fluid.ρ/10,b_eq=fluid.MM/fluid.ρ*4))
     # v=find_zero(f,(fluid.MM/fluid.ρ/10000000,fluid.MM/fluid.ρ),A42(),xtol=1.0E-8)
-    v=find_zero(f,fluid.MM/fluid.ρ,tol=1.0E-8)
+    v=find_zero(f,5fluid.MM/fluid.ρ,tol=1.0E-10)
 
     return fluid.MM/v
 end
@@ -204,7 +206,7 @@ end
 function rho(P,T,fluid::Hexadecene,EOS::PR)
 
     P_loc=P
-    R=8.31446261815324*1.0E3
+    R=8.31446261815324E3
 
     # ac=0.457235(R*fluid.Tc)^2/fluid.Pc
     ac=0.45724*(R*fluid.Tc)^2/fluid.Pc
