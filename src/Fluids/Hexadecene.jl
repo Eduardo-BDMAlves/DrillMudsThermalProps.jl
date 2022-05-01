@@ -1,16 +1,4 @@
-export Hexadecene,
-        EOS,
-        PRSV,
-        PR,
-        RK
-
-
-abstract type EOS end
-
-
-struct PRSV end
-struct PR end
-struct RK end
+export Hexadecene
 
 
 
@@ -28,10 +16,28 @@ struct Hexadecene <: Fluid
     Tc::Float64
     Pc::Float64
     ω::Float64
+
+
+    TammannTait_params::NamedTuple
+
+
+
+
+
+
+
     #viscosity ver no arquivo c16.pdf
 
     function Hexadecene()
         MM=224.43
+
+        ## TammannTait_params fited from data...
+        TTps=(
+            E=-0.11503916234335715,
+            F0=-5.0268235197563744e8,
+            F1=1.6685928787241152e6,
+            F2=-1468.7483988370013
+        )
 
         new(
             :Hexadecene,
@@ -45,7 +51,9 @@ struct Hexadecene <: Fluid
             1370.0E3,
             # 1470.0E3,
             # 0.693
-            0.721
+            # 0.721
+            0.767,
+            TTps
             # 730.0
         )
 
@@ -311,7 +319,28 @@ function rho(P,T,fluid::Hexadecene,EOS::PR)
     # return 0.5
 end
 
-rho(P,T,fluid::Hexadecene)=rho(P,T,fluid,PR())
+
+function rho_stdP_hexadecene(T,hex::Hexadecene)
+    return 4.608E2+8.18429E-1*(hex.Tc-T)-1.6747E-4(hex.Tc-T)^2
+end
+
+function rho(P,T,fluid::Hexadecene,EOS::TT)
+
+    rho_stdP=rho_stdP_hexadecene(T,fluid)
+
+    (E,F0,F1,F2)=fluid.TammannTait_params
+    num=P-F0-F1*T-F2*T*T
+    den=101325.0-F0-F1*T-F2*T*T
+
+    return rho_stdP*(1-E*log(num/den))
+end
+
+
+
+
+
+
+rho(P,T,fluid::Hexadecene)=rho(P,T,fluid,TT())
 
 
 

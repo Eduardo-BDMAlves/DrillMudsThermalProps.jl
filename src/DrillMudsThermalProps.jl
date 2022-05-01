@@ -13,6 +13,7 @@ using Roots
 
 include("Erros.jl")
 include("Materials.jl")
+include("EquationsOfState.jl")
 
 
 Fluids_paths=joinpath(@__DIR__,"Fluids")
