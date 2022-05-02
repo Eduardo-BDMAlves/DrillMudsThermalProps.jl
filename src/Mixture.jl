@@ -2,7 +2,9 @@ export Mud,
         DrillFluid,
         CTEVolDist,
         VarVolDist,
-        update_fs
+        update_fs,
+        rho,
+        Cp
 
 
 abstract type Mud end
@@ -136,9 +138,9 @@ end
 
 abstract type RhoModel end
 
-struct CTEVolDist end
+struct CTEVolDist<:RhoModel end
 
-struct VarVolDist end
+struct VarVolDist<:RhoModel end
 
 # density of discret phases
 
@@ -187,18 +189,44 @@ end
 
 
 
+abstract type CpModel end
 
+struct CTEVolCp<:CpModel end
+
+struct VarVolCp<:CpModel end
+struct MassCp<:CpModel end
+
+# density of discret phases
 
 function Cp(P,T,fluid::DrillFluid)
+    return Cp(P,T,fluid,MassCp())
+end
+
+
+function Cp(P,T,fluid::DrillFluid,mod::CTEVolCp)
+
+    CpL=Cp.(P,T,fluid.Liquids)
+    CpS=Cp.(P,T,fluid.Solids)
+
+    return dot(fluid.fL,CpL)+dot(fluid.fS,CpS)
+end
+
+function Cp(P,T,fluid::DrillFluid,mod::VarVolCp)
+
+    (fL,fS)=update_fs(P,T,fluid)
+
+    CpL=Cp.(P,T,fluid.Liquids)
+    CpS=Cp.(P,T,fluid.Solids)
+
+    return dot(fL,CpL)+dot(fS,CpS)
+end
+
+function Cp(P,T,fluid::DrillFluid,mod::MassCp)
+
     CpsL=Cp.(P,T,fluid.Liquids)
     CpsS=Cp.(P,T,fluid.Solids)
 
     return dot(CpsL,fluid.wtL)+dot(CpsS,fluid.wtS)
 end
-
-
-
-
-
 
 

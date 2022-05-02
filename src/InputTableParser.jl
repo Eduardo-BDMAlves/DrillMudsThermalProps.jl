@@ -68,8 +68,9 @@ function solicitation_table_parser(df,target_rho,total_vol)
             rho=1.0
             if row.Componente == :Olefina || row.Componente == :Hexadeceno
                 fluid=Hexadecene()
-                rho=0.728*1000.0
-                # rho=fluid.ρ
+                # rho=0.728*1000.0
+                # rho=777.6137523769162
+                rho=fluid.ρ
                 append!(oil_index,i)
                 append!(oil_content,[fluid])
             elseif row.Componente == :Brine_NaCl && !ismissing(row.conc)

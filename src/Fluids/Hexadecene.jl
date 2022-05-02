@@ -41,7 +41,8 @@ struct Hexadecene <: Fluid
 
         new(
             :Hexadecene,
-            781.1,#no Nist 777.91
+            # 781.1,#no Nist 777.91
+            786.24,
             # 679.9173943031689,
             357.2/MM*1.0E3,
             3.0E-3,
