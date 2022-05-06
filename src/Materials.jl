@@ -10,10 +10,6 @@ abstract type Material end
 abstract type Solid <: Material end
 abstract type Fluid <: Material end
 
-# Fluid_sets=Union{(Fluid, (Fluid)...)...}
-
-# struct Water <: Fluid end
-
 struct TestSolid <: Solid
     name::Symbol
     ρ::Float64

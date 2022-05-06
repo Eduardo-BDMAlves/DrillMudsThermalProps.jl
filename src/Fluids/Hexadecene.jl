@@ -68,19 +68,15 @@ end
 
 function rho(P,T,fluid::Hexadecene,EOS::PRSV)
     ## Based in the PRSV EOS
-    k0=1.3850916#/0.8
-    k1=-0.048310908#/1000
+    k0=1.3850916
+    k1=-0.048310908
     R=8.31446261815324*1.0E3
 
-    # ac=11241.446#*1.0E6
-    # b=0.31861633#*1.0E3
     ac=0.45724*(R*fluid.Tc)^2/fluid.Pc
 
-    # b=0.077796R*fluid.Tc/fluid.Pc
     b=0.07780*R*fluid.Tc/fluid.Pc
 
     Tr=T/fluid.Tc
-    # Tr=T/(0.020464*ac/b)
     κ=k0+k1*(1+sqrt(Tr))*(0.7-Tr)
     alpha=(1+κ*(1-sqrt(Tr)))*(1+κ*(1-sqrt(Tr)))
 
@@ -88,10 +84,6 @@ function rho(P,T,fluid::Hexadecene,EOS::PRSV)
     A=b-R*T/P
     B=ac*alpha/P-2R*T*b/P-3b^2
     C=(b^2+R*T*b/P-ac*alpha/P)*b
-
-    # f(v) = v^3+A*v^2+B*v+C
-
-    # v=find_zero(f,(fluid.MM/fluid.ρ/2,fluid.MM/fluid.ρ*2),A42(),xtol=1.0E-8)
 
     C1=A
     C2=B
@@ -104,15 +96,15 @@ function rho(P,T,fluid::Hexadecene,EOS::PRSV)
 
     tol=1.0E-9
     v=0.0
-    println((
-        Δ=Δ,
-        E=E,
-        D=D,
-        C4=C4,
-        C3=C3,
-        C2=C2,
-        C1=C1
-    ))
+    # println((
+    #     Δ=Δ,
+    #     E=E,
+    #     D=D,
+    #     C4=C4,
+    #     C3=C3,
+    #     C2=C2,
+    #     C1=C1
+    # ))
 
     if Δ>tol
 
@@ -164,12 +156,9 @@ function rho(P,T,fluid::Hexadecene,EOS::PRSV)
     Av=0.808
     Bv=2.575
 
-    # Dv=-0.04279848596094332#-0.6144070066691208*1000#brute force...
-    # Dv=-0.07912628148911949
     Dv=-0.07844500194634374
 
     v_new=(v+Dv)*(1-exp(Av-Bv/Tr^3))
-    # v_new=v
     # return fluid.MM/v
     return fluid.MM/v_new
 end
@@ -245,8 +234,8 @@ function rho(P,T,fluid::Hexadecene,EOS::PR)
 
     f(v)=v^3+C1*v^2+C2*v+C3
 
-    v_m=find_zero(f,fluid.MM/fluid.ρ*100,xtol=1.0E-8)
-    println((v_m=v_m,rho=fluid.MM/v_m))
+    # v_m=find_zero(f,fluid.MM/fluid.ρ*100,xtol=1.0E-8)
+    # println((v_m=v_m,rho=fluid.MM/v_m))
     # return fluid.MM/v_m
 
     C4=C1/3

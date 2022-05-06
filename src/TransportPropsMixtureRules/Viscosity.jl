@@ -19,7 +19,7 @@ function visc(P,T,Mud::DrillFluid, model::GuthSimha)
     return visc(P,T,Mud.Liquids[cont_index])*(1.0+2.5*sum(fS)+14.1*sum(fS)^2)
 end
 
-function visc(P,T,Mud::DrillFluid) 
-    return visc(P,T,Mud,Einstein())
+function visc(P,T,Mud::DrillFluid)
+    return visc(P,T,Mud,GuthSimha())
 end
 
