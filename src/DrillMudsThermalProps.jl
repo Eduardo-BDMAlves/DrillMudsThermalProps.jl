@@ -12,8 +12,8 @@ using Roots
 # Write your package code here.
 
 include("Erros.jl")
-include("EquationsOfState.jl")
 include("Materials.jl")
+include("EquationsOfState.jl")
 
 
 Fluids_paths=joinpath(@__DIR__,"Fluids")
