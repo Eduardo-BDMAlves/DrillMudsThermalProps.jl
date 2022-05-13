@@ -79,7 +79,7 @@ function solve_cubic(C1,C2,C3)
     elseif Δ≥-tol
         v1=2cbrt(D)-C4
         v2=-cbrt(D)-C4
-        println((v1=v1,v2=v2))
+        # println((v1=v1,v2=v2))
         if v1 ≥ 0 && v2 ≥ 0
             v=min(v1,v2)
         elseif v1 ≥ 0
@@ -94,7 +94,7 @@ function solve_cubic(C1,C2,C3)
         v1=2sqrt(E)*cos(J/3)-C4
         v2=2sqrt(E)*cos(J/3 + 2π/3)-C4
         v3=2sqrt(E)*cos(J/3+4π/3)-C4
-
+        # println((v1=v1,v2=v2,v3=v3))
 
         if v1 ≥ 0 && v2 ≥ 0 && v3 ≥ 0
             v=min(v1,v2,v3)

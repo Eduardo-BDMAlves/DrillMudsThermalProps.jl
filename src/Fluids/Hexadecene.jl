@@ -134,8 +134,7 @@ rho(P,T,fluid::Hexadecene)=rho(P,T,fluid,TT())
 
 
 function visc(P,T,fluid::Hexadecene)
-    @warn "Not implemented, using constant value for implementation of mixture... Implement the rule."
-    return fluid.μ
+    return (10^(10^9.975 * T^(-4.137))-0.8)*1E-3
 end
 
 function Cp(P,T,fluid::Hexadecene)
