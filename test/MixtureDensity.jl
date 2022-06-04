@@ -1,4 +1,5 @@
 @testset "Mixture density" begin
+    atol_tests=1.0E-7
 
     @testset "Limit concentrations leads to pure substance?" begin
         water = Water()
@@ -25,9 +26,9 @@
                     rho_mix0 = rho(P, T, WatBar0)
                     rho_mix100 = rho(P, T, WatBar100)
 
-                    @test rho_water == rho_mix0
+                    @test isapprox(rho_water, rho_mix0, atol=atol_tests)
 
-                    @test rho_barite == rho_mix100
+                    @test isapprox(rho_barite, rho_mix100, atol=atol_tests)
 
                 end
             end
@@ -51,9 +52,9 @@
                     rho_mix0 = rho(P, T, BrBar0)
                     rho_mix100 = rho(P, T, BrBar100)
 
-                    @test rho_Br == rho_mix0
+                    @test isapprox(rho_Br, rho_mix0, atol=atol_tests)
 
-                    @test rho_barite == rho_mix100
+                    @test isapprox(rho_barite, rho_mix100, atol=atol_tests)
 
                 end
             end
@@ -78,9 +79,9 @@
                     rho_mix0 = rho(P, T, BrBar0)
                     rho_mix100 = rho(P, T, BrBar100)
 
-                    @test rho_Br == rho_mix0
+                    @test isapprox(rho_Br, rho_mix0, atol=atol_tests)
 
-                    @test rho_barite == rho_mix100
+                    @test isapprox(rho_barite, rho_mix100, atol=atol_tests)
 
                 end
             end

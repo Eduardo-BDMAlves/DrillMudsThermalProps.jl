@@ -1,13 +1,18 @@
 export Mud,
-        DrillFluid
+        DrillFluid,
+        CTEVolDist,
+        VarVolDist,
+        update_fs,
+        rho,
+        Cp
 
 
 abstract type Mud end
 
 
 struct DrillFluid <: Mud
-    Liquids::Vector{Fluid}
-    Solids::Vector{Solid}
+    Liquids::Vector{<:Fluid}
+    Solids::Vector{<:Solid}
 
     nLiq::Integer
     nSol::Integer
@@ -21,6 +26,7 @@ struct DrillFluid <: Mud
     wtL::Vector{Float64}
     wtS::Vector{Float64}
 
+    std_rho::Float64
 
     function DrillFluid(Flist::Vector{<:Fluid},Slist::Vector{<:Solid};fs::AbstractVector,normalize=false)
 
@@ -72,6 +78,8 @@ struct DrillFluid <: Mud
         wtL=mLs./mT
         wtS=mSs./mT
 
+        std_rho=dot(fL,[rho.ρ for rho ∈ Flist])+dot(fS,[rho.ρ for rho ∈ Slist])
+
         new(
             Flist,
             Slist,
@@ -82,7 +90,8 @@ struct DrillFluid <: Mud
             fS,
             sum_fS,
             wtL,
-            wtS
+            wtS,
+            std_rho
         )
 
 
@@ -110,9 +119,37 @@ end
 ## Functions
 
 
+
+
+function update_fs(P,T,fluid::DrillFluid)
+    rho_T = rho(P,T,fluid)
+    fl = fluid.wtL ./ rho.(P,T,fluid.Liquids).*rho_T
+
+    fs = fluid.wtS ./ rho.(P,T,fluid.Solids).*rho_T
+
+    return (fl,fs)
+end
+
+
+
+
+
+#for density
+
+abstract type RhoModel end
+
+struct CTEVolDist<:RhoModel end
+
+struct VarVolDist<:RhoModel end
+
 # density of discret phases
 
 function rho(P,T,fluid::DrillFluid)
+    return rho(P,T,fluid,VarVolDist())
+end
+
+
+function rho(P,T,fluid::DrillFluid,model::CTEVolDist)
     fluid_list=fluid.Liquids
     solids_list=fluid.Solids
 
@@ -132,4 +169,64 @@ function rho(P,T,fluid::DrillFluid)
 
     return rho_T
 end
+
+
+function rho(P,T,fluid::DrillFluid,model::VarVolDist)
+    fluid_list=fluid.Liquids
+
+    fL=fluid.fL
+
+    rho_l=rho.(P,T,fluid.Liquids)
+
+    rho_l_std=[f.ρ for f ∈ fluid_list]
+
+    d_rho_l=rho_l-rho_l_std
+
+    d_rho_l_dim=d_rho_l./rho_l
+
+    return fluid.std_rho/(1.0-dot(fL,d_rho_l_dim))
+end
+
+
+
+abstract type CpModel end
+
+struct CTEVolCp<:CpModel end
+
+struct VarVolCp<:CpModel end
+struct MassCp<:CpModel end
+
+# density of discret phases
+
+function Cp(P,T,fluid::DrillFluid)
+    return Cp(P,T,fluid,MassCp())
+end
+
+
+function Cp(P,T,fluid::DrillFluid,mod::CTEVolCp)
+
+    CpL=Cp.(P,T,fluid.Liquids)
+    CpS=Cp.(P,T,fluid.Solids)
+
+    return dot(fluid.fL,CpL)+dot(fluid.fS,CpS)
+end
+
+function Cp(P,T,fluid::DrillFluid,mod::VarVolCp)
+
+    (fL,fS)=update_fs(P,T,fluid)
+
+    CpL=Cp.(P,T,fluid.Liquids)
+    CpS=Cp.(P,T,fluid.Solids)
+
+    return dot(fL,CpL)+dot(fS,CpS)
+end
+
+function Cp(P,T,fluid::DrillFluid,mod::MassCp)
+
+    CpsL=Cp.(P,T,fluid.Liquids)
+    CpsS=Cp.(P,T,fluid.Solids)
+
+    return dot(CpsL,fluid.wtL)+dot(CpsS,fluid.wtS)
+end
+
 

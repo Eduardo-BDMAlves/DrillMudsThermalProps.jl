@@ -37,10 +37,12 @@ function solicitation_table_parser(df,target_rho,total_vol)
         w_i=findall(df.Componente .== :H2O)
         Na_i=findall(df.Componente .== :NaCl)
         
-        w_QSP=any()
+        # w_QSP=any()
         
     end
 
+    # S_list=Solids[]
+    # F_list=Fluids[]
 
     for i in range(1,len_components)
 
@@ -53,10 +55,12 @@ function solicitation_table_parser(df,target_rho,total_vol)
             if row.Componente == :Obiturante
                 append!(solid_content,[CaCO3()])
                 append!(solids_index,i)
+                # append!(S_list,[Bentonite()])
             elseif row.Componente == :Reologico
                 ben=Bentonite()
                 append!(solid_content,[ben])
                 append!(solids_index,i)
+                # append!(S_list,[Bentonite()])
             end
         elseif row.unit == "bbl/bbl" || row.unit == "v/v"
             vol=row.conc*total_vol
@@ -64,8 +68,9 @@ function solicitation_table_parser(df,target_rho,total_vol)
             rho=1.0
             if row.Componente == :Olefina || row.Componente == :Hexadeceno
                 fluid=Hexadecene()
-                rho=0.728*1000.0
-                # rho=fluid.ρ
+                # rho=0.728*1000.0
+                # rho=777.6137523769162
+                rho=fluid.ρ
                 append!(oil_index,i)
                 append!(oil_content,[fluid])
             elseif row.Componente == :Brine_NaCl && !ismissing(row.conc)
@@ -113,11 +118,9 @@ function solicitation_table_parser(df,target_rho,total_vol)
 
 
         end
-        println((i=i,))
         append!(mass_unit,m)
         append!(mass,ustrip(m))
     end
-    println(mass_unit)
 
     ## Encontra as massas dos QSP...
     fluid_rho=target_rho*ppg_to_kgm3
@@ -193,6 +196,15 @@ function solicitation_table_parser(df,target_rho,total_vol)
     
     mass_frac=mass_unit./total_mass
 
+
+    F_content=[
+        water_content,
+        oil_content
+    ]
+    S_content=[
+        solid_content
+    ]
+    
     df.mass=mass_unit
     (
         total_mass=total_mass,
@@ -209,6 +221,8 @@ function solicitation_table_parser(df,target_rho,total_vol)
         solid_indexes=solids_index,
         aditive_indexes=aditive_indexes,
         df=df,
+        fluid_content=F_content,
+        solid_content=S_content
         # sol_indexes=solids_index
     )
 
