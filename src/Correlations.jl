@@ -117,10 +117,24 @@ end
 
 
 
-# function therm_cond(P, T, solid::CaCO3)
-#     return solid.k
-# end
+# therm expand
+
+function therm_expand(P, T, fluid::Solid)
+    try
+        return -gradient(x -> rho(P, x, fluid), T)[1] / rho(P, T, fluid)
+    catch e 
+        return zero(promote_type(eltype(P),eltype(T)))
+    end
+end
 
 
+## compressibility
 
+function compress(P, T, fluid::Solid)
+    try
+        return gradient(x -> rho(x, T, fluid), P)[1] / rho(P, T, fluid)
+    catch e 
+        return zero(promote_type(eltype(P),eltype(T)))
+    end
+end
 

@@ -18,6 +18,9 @@ end
 
 
 
+function rho(P,T,solid::Barite)
+    return solid.ρ/((1+0.8E-4(T-288.705))*(1-1E-10*(P-101325.0)))
+end
 
 
 function therm_cond(P, T, solid::Barite)
