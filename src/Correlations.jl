@@ -85,12 +85,9 @@ function Cp(P, T, solid::Solid)
     # @error "Property not yet implemented for solid - Cₚ"
     # throw(NotImplementedError())
     # return missing
-    return solid.Cₚ
+    return solid.cₚ
 end
 
-function Cp(P, T, solid::Barite)
-    return 4600.0
-end
 
 function Cp(P, T, solid::CaCO3)
     return solid.cₚ
