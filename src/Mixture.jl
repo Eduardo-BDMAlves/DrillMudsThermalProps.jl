@@ -142,10 +142,12 @@ struct CTEVolDist<:RhoModel end
 
 struct VarVolDist<:RhoModel end
 
+struct CorrectFormula<:RhoModel end
+
 # density of discret phases
 
 function rho(P,T,fluid::DrillFluid)
-    return rho(P,T,fluid,VarVolDist())
+    return rho(P,T,fluid,CorrectFormula())
 end
 
 
@@ -187,7 +189,21 @@ function rho(P,T,fluid::DrillFluid,model::VarVolDist)
     return fluid.std_rho/(1.0-dot(fL,d_rho_l_dim))
 end
 
+function rho(P,T,fluid::DrillFluid,model::CorrectFormula)
+    fluid_list=fluid.Liquids
+    solid_list=fluid.Solids
 
+    fL=fluid.fL
+    fS=fluid.fS
+
+    rho_l_std=[rho(101325.0,273.15+20,L) for L in fluid_list]
+    rho_S_std=[rho(101325.0,273.15+20,S) for S in solid_list]
+
+    rho_l=[rho(P,T,L) for L in fluid_list]
+    rho_S=[rho(P,T,S) for S in solid_list]
+
+    return fluid.std_rho/(dot(fL,(rho_l_std./rho_l))+dot(fS,(rho_S_std./rho_S)))
+end
 
 abstract type CpModel end
 
@@ -229,4 +245,22 @@ function Cp(P,T,fluid::DrillFluid,mod::MassCp)
     return dot(CpsL,fluid.wtL)+dot(CpsS,fluid.wtS)
 end
 
+
+
+function therm_expand(P,T,fluid::DrillFluid)
+    try
+        return -gradient(x -> rho(P, x, fluid), T)[1] / rho(P, T, fluid)
+    catch e 
+        return NaN
+    end
+end
+
+
+function compress(P, T, fluid::DrillFluid)
+    try
+        return gradient(x -> rho(x, T, fluid), P)[1] / rho(P, T, fluid)
+    catch e 
+        return NaN
+    end
+end
 
