@@ -264,3 +264,22 @@ function compress(P, T, fluid::DrillFluid)
     end
 end
 
+
+
+
+
+
+
+
+function list_sort_f(P,T,Mud::DrillFluid)
+    (fl,fs) = update_fs(P,T,Mud)
+
+    Liqs=Mud.Liquids
+    Sols=Mud.Solids
+
+    Liq_list=[(f,L) for (f,L) in zip(fl,Liqs)]
+    Sol_list=[(f,S) for (f,S) in zip(fs,Sols)]
+
+
+    return vcat(Liq_list,Sol_list)
+end
