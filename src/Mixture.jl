@@ -4,7 +4,9 @@ export Mud,
         VarVolDist,
         update_fs,
         rho,
-        Cp
+        Cp,
+        therm_expand,
+        compress
 
 
 abstract type Mud end
@@ -34,15 +36,15 @@ struct DrillFluid <: Mud
         nS = Integer(length(Slist))
 
         missing_pos = findall(ismissing,fs)
-        
+
 
         if !isempty(missing_pos)
             if length(missing_pos)>1
                 @error "Too many volumetric proportions field left open. Package can complete the mixture with only one component at a time."
             end
             total_frac=sum(skipmissing(fs))
-            if total_frac>1.0 
-                @error "Normalization only available if no missing values are provided." 
+            if total_frac>1.0
+                @error "Normalization only available if no missing values are provided."
             end
 
             fs[missing_pos[1]]=1.0-total_frac
@@ -99,8 +101,8 @@ struct DrillFluid <: Mud
 
 
     # function DrillFluid(Flist,Slist;fs=missing,wts::Vector{Float64})
-    #     #TODO: completar esse trecho com a primeira parte dos modelos de mistura... implementar mais de uma versão, um com o uso de frações de massa, outro com volume. Por enquanto não usar 
-        
+    #     #TODO: completar esse trecho com a primeira parte dos modelos de mistura... implementar mais de uma versão, um com o uso de frações de massa, outro com volume. Por enquanto não usar
+
 
 
 
@@ -250,7 +252,7 @@ end
 function therm_expand(P,T,fluid::DrillFluid)
     try
         return -gradient(x -> rho(P, x, fluid), T)[1] / rho(P, T, fluid)
-    catch e 
+    catch e
         return NaN
     end
 end
@@ -259,7 +261,7 @@ end
 function compress(P, T, fluid::DrillFluid)
     try
         return gradient(x -> rho(x, T, fluid), P)[1] / rho(P, T, fluid)
-    catch e 
+    catch e
         return NaN
     end
 end
