@@ -21,7 +21,6 @@ struct nDodecane <: Fluid
         # Acording to Lemmon2004
         Tc=658.1
         Pc=1.817E6
-        # Acording to coolprop - http://www.coolprop.org/fluid_properties/fluids/n-Dodecane.html
         ω=0.574182221240689
 
 
@@ -51,11 +50,3 @@ function rho(P,T,fluid::nDodecane,EOS::PR)
     v=solve_EOS(EOS,fluid,P,T)
     return fluid.MM/v
 end
-
-
-
-
-
-
-
-

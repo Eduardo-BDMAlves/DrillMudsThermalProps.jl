@@ -101,10 +101,6 @@ struct DrillFluid <: Mud
 
 
     # function DrillFluid(Flist,Slist;fs=missing,wts::Vector{Float64})
-    #     #TODO: completar esse trecho com a primeira parte dos modelos de mistura... implementar mais de uma versão, um com o uso de frações de massa, outro com volume. Por enquanto não usar
-
-
-
 
     # end
 

@@ -15,7 +15,7 @@ struct Barite <: Solid
         new(
             :Barite,
             4100.0, #kg/m3
-            Cp_mol/MM*1000, # cp?
+            Cp_mol/MM*1000, # cp
             0.09515, #k
             MM, #g/mol
         )
@@ -34,8 +34,3 @@ function therm_cond(P, T, solid::Barite)
     # return -9.0E-5 * Tc + 0.0974
     return 0.1219835-9E-5*T
 end
-
-
-
-
-

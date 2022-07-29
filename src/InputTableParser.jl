@@ -36,9 +36,9 @@ function solicitation_table_parser(df,target_rho,total_vol)
     if any(df.Componente .== :H2O) && any(df.Componente .== :NaCl)
         w_i=findall(df.Componente .== :H2O)
         Na_i=findall(df.Componente .== :NaCl)
-        
+
         # w_QSP=any()
-        
+
     end
 
     # S_list=Solids[]
@@ -145,7 +145,7 @@ function solicitation_table_parser(df,target_rho,total_vol)
                 end
             end
             mass_unit[QSP_indexes[1]]=total_mass-m_a-m_B
-        else 
+        else
             # if has_pure_water && any(findall(.Componente .== :NaCl))
             #     println("hello")
             #     @error "Not Implemented"
@@ -153,7 +153,6 @@ function solicitation_table_parser(df,target_rho,total_vol)
         end
     end
 
-    ## Encontrar as frações volumétricas considerando aditivos dissolvidos na água.
 
     fP=[0.0,0.0,0.0]
     fcomp=[
@@ -185,7 +184,7 @@ function solicitation_table_parser(df,target_rho,total_vol)
 
 
     vol_water=total_vol-sum(vol_oil)-sum(vol_sol)
-    
+
     fP[1]=upreferred(vol_water/total_vol)
     fP[2]=upreferred(sum(vol_oil)/total_vol)
     fP[3]=upreferred(sum(vol_sol)/total_vol)
@@ -193,7 +192,7 @@ function solicitation_table_parser(df,target_rho,total_vol)
     fcomp[1] = [upreferred(vol_water/total_vol)]
     fcomp[2] .= upreferred.(fcomp[2]./total_vol)
     fcomp[3] = upreferred.(fcomp[3]./total_vol)
-    
+
     mass_frac=mass_unit./total_mass
 
 
@@ -204,7 +203,7 @@ function solicitation_table_parser(df,target_rho,total_vol)
     S_content=[
         solid_content
     ]
-    
+
     df.mass=mass_unit
     (
         total_mass=total_mass,
@@ -229,12 +228,3 @@ function solicitation_table_parser(df,target_rho,total_vol)
 
 
 end
-
-
-
-
-
-
-
-
-

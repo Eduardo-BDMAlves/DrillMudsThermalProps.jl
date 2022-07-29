@@ -7,9 +7,6 @@ struct CaCO3 <: Solid
     k::Float64
     MM::Float64
 
-    # http://www.matweb.com/search/datasheet_print.aspx?matguid=bea4bfa9c8bd462093d50da5eebe78ac
-    # https://thermtest.com/thermal-resources/materials-database
-    # Caenn -> drilling mud
     function CaCO3()
         MM=100.087
         Cp_mol=83.5
@@ -30,8 +27,3 @@ end
 function therm_cond(P,T,solid::CaCO3)
     return solid.k
 end
-
-
-
-
-

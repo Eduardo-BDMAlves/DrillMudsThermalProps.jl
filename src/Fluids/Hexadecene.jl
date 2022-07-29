@@ -68,7 +68,6 @@ struct Hexadecene <: Fluid
 
     end
 
-    #https://wtt-pro.nist.gov/wtt-pro/index.html?cmp=1-hexadecene#1-hexadecene;06;0H;0A;4g;1g;7g;3g;5g;Hg;8g,298.15,413.15,10;8b;O6;OA;OH;Qg;TK;TC;T2;Tg;Re;zK;zC;z2;zg;Ye;aK;aC;a2;ag;ae;hf;mg;jg;ja;na;ng;ya;yf/c;0,0/a;782,144/8gR;805,301/8gT;72,426,508,382/
 
 end
 
@@ -104,7 +103,7 @@ end
 function rho(P,T,fluid::Hexadecene,EOS::PR)
 
     v=solve_EOS(EOS,fluid,P,T)
-    
+
     return fluid.MM/v
 
 
@@ -156,9 +155,3 @@ function therm_cond(P,T,fluid::Hexadecene)
     log_lamb=A+B*(1.0-T/C)^(2/7)
     return 10^log_lamb
 end
-
-
-
-
-
-
