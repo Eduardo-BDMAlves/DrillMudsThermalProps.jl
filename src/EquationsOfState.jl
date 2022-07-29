@@ -127,14 +127,18 @@ function solve_EOS(EOS::RK,fluid::Fluid,P,T)
 
     Tr=T/fluid.Tc
 
-    alpha=(1+(0.37464+1.54226ω-0.26992ω^2)*(1-sqrt(Tr)))^2
+    # alpha=(1+(0.37464+1.54226ω-0.26992ω^2)*(1-sqrt(Tr)))^2
+    alpha=1/sqrt(Tr)
 
     A=a*alpha*P/(R*T)^2
     B=b*P/(R*T)
 
-    C1=(B-1)
-    C2=A-2B-3B^2
-    C3=(B^2+B-A)*B
+    # C1=(B-1)
+    # C2=A-2B-3B^2
+    # C3=(B^2+B-A)*B
+    C1=-R*T/P
+    C2=a/P-b*R*T/P-b^2
+    C3=-a*b/P
 
 
     v=solve_cubic(C1,C2,C3)

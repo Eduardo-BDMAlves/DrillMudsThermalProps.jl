@@ -85,12 +85,9 @@ function Cp(P, T, solid::Solid)
     # @error "Property not yet implemented for solid - Cₚ"
     # throw(NotImplementedError())
     # return missing
-    return solid.Cₚ
+    return solid.cₚ
 end
 
-function Cp(P, T, solid::Barite)
-    return 4600.0
-end
 
 function Cp(P, T, solid::CaCO3)
     return solid.cₚ
@@ -117,10 +114,24 @@ end
 
 
 
-# function therm_cond(P, T, solid::CaCO3)
-#     return solid.k
-# end
+# therm expand
+
+function therm_expand(P, T, fluid::Solid)
+    try
+        return -gradient(x -> rho(P, x, fluid), T)[1] / rho(P, T, fluid)
+    catch e 
+        return zero(promote_type(eltype(P),eltype(T)))
+    end
+end
 
 
+## compressibility
 
+function compress(P, T, fluid::Solid)
+    try
+        return gradient(x -> rho(x, T, fluid), P)[1] / rho(P, T, fluid)
+    catch e 
+        return zero(promote_type(eltype(P),eltype(T)))
+    end
+end
 

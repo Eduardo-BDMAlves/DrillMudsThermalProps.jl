@@ -42,7 +42,7 @@ function Cp(P, T, fluid::Water)
     g = -4.26280988E-15
     h = 1.14112829E-17
 
-    return b + 2 * c * T + e * P + 2 * f * P * T + g * P * 2 + 2 * h * P^2 * T
+    return b + 2 * c * T + e * P + 2 * f * P * T + g * P ^ 2 + 2 * h * P^2 * T
 end
 
 

@@ -4,7 +4,9 @@ export Mud,
         VarVolDist,
         update_fs,
         rho,
-        Cp
+        Cp,
+        therm_expand,
+        compress
 
 
 abstract type Mud end
@@ -34,15 +36,15 @@ struct DrillFluid <: Mud
         nS = Integer(length(Slist))
 
         missing_pos = findall(ismissing,fs)
-        
+
 
         if !isempty(missing_pos)
             if length(missing_pos)>1
                 @error "Too many volumetric proportions field left open. Package can complete the mixture with only one component at a time."
             end
             total_frac=sum(skipmissing(fs))
-            if total_frac>1.0 
-                @error "Normalization only available if no missing values are provided." 
+            if total_frac>1.0
+                @error "Normalization only available if no missing values are provided."
             end
 
             fs[missing_pos[1]]=1.0-total_frac
@@ -99,8 +101,8 @@ struct DrillFluid <: Mud
 
 
     # function DrillFluid(Flist,Slist;fs=missing,wts::Vector{Float64})
-    #     #TODO: completar esse trecho com a primeira parte dos modelos de mistura... implementar mais de uma versão, um com o uso de frações de massa, outro com volume. Por enquanto não usar 
-        
+    #     #TODO: completar esse trecho com a primeira parte dos modelos de mistura... implementar mais de uma versão, um com o uso de frações de massa, outro com volume. Por enquanto não usar
+
 
 
 
@@ -142,10 +144,12 @@ struct CTEVolDist<:RhoModel end
 
 struct VarVolDist<:RhoModel end
 
+struct CorrectFormula<:RhoModel end
+
 # density of discret phases
 
 function rho(P,T,fluid::DrillFluid)
-    return rho(P,T,fluid,VarVolDist())
+    return rho(P,T,fluid,CorrectFormula())
 end
 
 
@@ -187,7 +191,21 @@ function rho(P,T,fluid::DrillFluid,model::VarVolDist)
     return fluid.std_rho/(1.0-dot(fL,d_rho_l_dim))
 end
 
+function rho(P,T,fluid::DrillFluid,model::CorrectFormula)
+    fluid_list=fluid.Liquids
+    solid_list=fluid.Solids
 
+    fL=fluid.fL
+    fS=fluid.fS
+
+    rho_l_std=[rho(101325.0,273.15+20,L) for L in fluid_list]
+    rho_S_std=[rho(101325.0,273.15+20,S) for S in solid_list]
+
+    rho_l=[rho(P,T,L) for L in fluid_list]
+    rho_S=[rho(P,T,S) for S in solid_list]
+
+    return fluid.std_rho/(dot(fL,(rho_l_std./rho_l))+dot(fS,(rho_S_std./rho_S)))
+end
 
 abstract type CpModel end
 
@@ -230,3 +248,40 @@ function Cp(P,T,fluid::DrillFluid,mod::MassCp)
 end
 
 
+
+function therm_expand(P,T,fluid::DrillFluid)
+    try
+        return -gradient(x -> rho(P, x, fluid), T)[1] / rho(P, T, fluid)
+    catch e
+        return NaN
+    end
+end
+
+
+function compress(P, T, fluid::DrillFluid)
+    try
+        return gradient(x -> rho(x, T, fluid), P)[1] / rho(P, T, fluid)
+    catch e
+        return NaN
+    end
+end
+
+
+
+
+
+
+
+
+function list_sort_f(P,T,Mud::DrillFluid)
+    (fl,fs) = update_fs(P,T,Mud)
+
+    Liqs=Mud.Liquids
+    Sols=Mud.Solids
+
+    Liq_list=[(f,L) for (f,L) in zip(fl,Liqs)]
+    Sol_list=[(f,S) for (f,S) in zip(fs,Sols)]
+
+
+    return vcat(Liq_list,Sol_list)
+end

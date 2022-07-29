@@ -77,15 +77,19 @@ end
 function rho(P,T,fluid::Hexadecene,EOS::PRSV)
     ## Based in the PRSV EOS
     v=solve_EOS(EOS,fluid,P,T)
-    Tr=T/fluid.Tc
-    Av=0.808
-    Bv=2.575
 
-    Dv=-0.07844500194634374
+    return fluid.MM/v
+    # Tr=T/fluid.Tc
+    # Av=0.808
+    # Bv=2.575
 
-    v_new=(v+Dv)*(1-exp(Av-Bv/Tr^3))
+    # Dv=-0.07844500194634374
+
+    # v_new=(v+Dv)*(1-exp(Av-Bv/Tr^3))
     # return fluid.MM/v
-    return fluid.MM/v_new
+
+    # return fluid.MM/v_new
+
 end
 
 
@@ -138,7 +142,8 @@ function visc(P,T,fluid::Hexadecene)
 end
 
 function Cp(P,T,fluid::Hexadecene)
-    return fluid.cₚ
+    # return fluid.cₚ
+    return 1.38547E3+2.042*(T)+1.8283E-3*(T)^2
 end
 
 
